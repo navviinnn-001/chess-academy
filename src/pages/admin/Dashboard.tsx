@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Users, UserX, Wallet, ClipboardList,
-  UserPlus, Video, PuzzleIcon, BookOpen, PenLine, ArrowRight,
+  UserPlus, Video, PuzzleIcon, BookOpen, PenLine, ArrowRight, Sparkles,
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import Card, { CardHeader } from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import Skeleton from '@/components/ui/Skeleton';
+import StatCard from '@/components/ui/StatCard';
+import AnimatedSection, { AnimatedItem } from '@/components/ui/AnimatedSection';
+import { MoveArrow } from '@/components/ui/ChessMotifs';
 import { api } from '@/lib/api';
-
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.07 } } };
-const item = { hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 0.9, 0.3, 1] } } };
+import { useAuth } from '@/context/AuthContext';
 
 interface SummaryDto {
   totalActive: number;
@@ -34,6 +34,7 @@ const quickActions = [
 ];
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const [summary, setSummary] = useState<SummaryDto | null>(null);
   const [missing, setMissing] = useState<MissingUpdateStudent[]>([]);
 
@@ -51,33 +52,41 @@ export default function AdminDashboard() {
   }
 
   const stats = [
-    { label: 'Active students', value: summary.totalActive, icon: Users, tone: 'success' as const },
-    { label: 'Inactive students', value: summary.totalInactive, icon: UserX, tone: 'neutral' as const },
-    { label: 'Payments pending', value: summary.paymentPending, icon: Wallet, tone: 'warning' as const },
-    { label: 'Missing weekly updates', value: summary.missingUpdates, icon: ClipboardList, tone: 'danger' as const },
+    { label: 'Active students', value: summary.totalActive, icon: <Users size={18} />, tone: 'emerald' as const },
+    { label: 'Inactive students', value: summary.totalInactive, icon: <UserX size={18} />, tone: 'neutral' as const },
+    { label: 'Payments pending', value: summary.paymentPending, icon: <Wallet size={18} />, tone: 'gold' as const },
+    { label: 'Missing weekly updates', value: summary.missingUpdates, icon: <ClipboardList size={18} />, tone: 'neutral' as const },
   ];
 
   return (
     <AdminLayout title="Dashboard" subtitle="Operations overview">
-      <motion.div initial="hidden" animate="visible" variants={stagger} className="space-y-6">
-        <motion.div variants={item} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {stats.map(s => (
-            <Card key={s.label} hover className="p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-10 w-10 rounded-md bg-white/5 flex items-center justify-center">
-                  <s.icon size={18} className="text-ink-300" />
-                </div>
-                {s.value > 0 && s.tone !== 'success' && <Badge tone={s.tone}>Action</Badge>}
-              </div>
-              <p className="font-display text-3xl text-ink-100">{s.value}</p>
-              <p className="text-xs text-ink-500 mt-1">{s.label}</p>
-            </Card>
-          ))}
-        </motion.div>
+      <AnimatedSection className="space-y-6">
+        {/* Cinematic welcome hero */}
+        <AnimatedItem>
+          <Card className="relative overflow-hidden p-7 md:p-9 border-gold-500/12">
+            <MoveArrow className="absolute -top-2 -right-6 w-56 opacity-30" color="#B08D4F" />
+            <div className="relative flex items-center gap-2 mb-3">
+              <Sparkles size={14} className="text-gold-400" />
+              <span className="coord-label text-xs text-gold-400">Academy Command Center</span>
+            </div>
+            <h2 className="editorial-heading text-2xl md:text-3xl text-ink-100 relative">
+              Welcome back, {user?.name?.split(' ')[0] ?? 'Coach'}.
+            </h2>
+            <p className="text-sm text-ink-400 mt-2 max-w-lg relative">
+              Here's the state of the academy today — students, classes, and coaching work that
+              needs your attention.
+            </p>
+          </Card>
+        </AnimatedItem>
 
-        <motion.div variants={item}>
+        {/* KPI grid */}
+        <AnimatedItem className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {stats.map(s => <StatCard key={s.label} label={s.label} value={s.value} icon={s.icon} tone={s.tone} />)}
+        </AnimatedItem>
+
+        <AnimatedItem>
           <Card className="p-5">
-            <p className="text-xs text-ink-500 mb-4">Quick Actions</p>
+            <p className="text-xs text-ink-500 mb-4 coord-label">Quick Actions</p>
             <div className="flex flex-wrap gap-3">
               {quickActions.map(a => (
                 <Link key={a.label} to={a.to}>
@@ -86,41 +95,43 @@ export default function AdminDashboard() {
               ))}
             </div>
           </Card>
-        </motion.div>
+        </AnimatedItem>
 
-        <motion.div variants={item}>
-          <Card>
-            <CardHeader title="Upcoming Class" />
-            <div className="px-5 pb-5">
-              {summary.nextClass ? (
-                <>
-                  <p className="text-sm text-ink-100 font-medium">{summary.nextClass.topic}</p>
-                  <p className="text-xs text-ink-500 mt-1">{new Date(summary.nextClass.dateTime).toLocaleString('en-IN', { weekday: 'long', hour: 'numeric', minute: '2-digit' })}</p>
-                  <Link to="/admin/live-classes"><Button size="sm" variant="ghost" className="mt-4 px-0" iconRight={<ArrowRight size={13} />}>Manage classes</Button></Link>
-                </>
-              ) : <p className="text-sm text-ink-500">No class scheduled.</p>}
-            </div>
-          </Card>
-        </motion.div>
+        <div className="grid lg:grid-cols-2 gap-6">
+          <AnimatedItem>
+            <Card hover className="h-full">
+              <CardHeader title="Upcoming Class" />
+              <div className="px-5 pb-5">
+                {summary.nextClass ? (
+                  <>
+                    <p className="text-sm text-ink-100 font-medium">{summary.nextClass.topic}</p>
+                    <p className="text-xs text-ink-500 mt-1">{new Date(summary.nextClass.dateTime).toLocaleString('en-IN', { weekday: 'long', hour: 'numeric', minute: '2-digit' })}</p>
+                    <Link to="/admin/live-classes"><Button size="sm" variant="ghost" className="mt-4 px-0" iconRight={<ArrowRight size={13} />}>Manage classes</Button></Link>
+                  </>
+                ) : <p className="text-sm text-ink-500">No class scheduled.</p>}
+              </div>
+            </Card>
+          </AnimatedItem>
 
-        <motion.div variants={item}>
-          <Card>
-            <CardHeader title="Students Missing Weekly Updates" subtitle={`${missing.length} students`} action={<Link to="/admin/weekly-updates"><Button size="sm" variant="outline">Write updates</Button></Link>} />
-            <div className="px-5 pb-5 divide-y divide-white/6">
-              {missing.length === 0 && <p className="text-sm text-ink-500 py-3">All students are up to date this week.</p>}
-              {missing.map(s => (
-                <div key={s.id} className="flex items-center justify-between py-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-navy-700 flex items-center justify-center text-xs text-ink-300">{s.name.split(' ').map(p => p[0]).join('')}</div>
-                    <span className="text-sm text-ink-200">{s.name}</span>
+          <AnimatedItem>
+            <Card hover className="h-full">
+              <CardHeader title="Students Missing Weekly Updates" subtitle={`${missing.length} students`} action={<Link to="/admin/weekly-updates"><Button size="sm" variant="outline">Write updates</Button></Link>} />
+              <div className="px-5 pb-5 divide-y divide-white/6 max-h-64 overflow-y-auto">
+                {missing.length === 0 && <p className="text-sm text-ink-500 py-3">All students are up to date this week.</p>}
+                {missing.map(s => (
+                  <div key={s.id} className="flex items-center justify-between py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-full bg-navy-700 flex items-center justify-center text-xs text-ink-300">{s.name.split(' ').map(p => p[0]).join('')}</div>
+                      <span className="text-sm text-ink-200">{s.name}</span>
+                    </div>
+                    <Badge tone="gold">Pending</Badge>
                   </div>
-                  <Badge tone="warning">Pending</Badge>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </motion.div>
-      </motion.div>
+                ))}
+              </div>
+            </Card>
+          </AnimatedItem>
+        </div>
+      </AnimatedSection>
     </AdminLayout>
   );
 }

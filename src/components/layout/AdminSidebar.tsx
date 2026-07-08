@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Users, Wallet, Lock, ClipboardList, Video, BookOpen,
-  PuzzleIcon, Megaphone, Settings, Crown, LogOut,
+  PuzzleIcon, Megaphone, Settings, Crown, LogOut, X,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useAuth } from '@/context/AuthContext';
@@ -19,18 +20,18 @@ const items = [
   { to: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
-export default function AdminSidebar() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const handleSignOut = () => { logout(); navigate('/login'); };
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 border-r border-white/8 bg-navy-950/60">
+    <>
       <div className="h-[72px] flex items-center gap-2.5 px-6 border-b border-white/8">
-        <span className="h-8 w-8 rounded-md bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
+        <span className="h-8 w-8 rounded-md bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-gold">
           <Crown size={16} className="text-navy-950" />
         </span>
-        <span className="font-display text-sm text-ink-100 leading-tight">Admin Console<br /><span className="text-ink-500 text-[10px] tracking-wider">WE CARE CHESS</span></span>
+        <span className="editorial-heading text-sm text-ink-100 leading-tight">Admin Console<br /><span className="text-ink-500 text-[10px] tracking-[0.15em] font-sans">WE CARE CHESS</span></span>
       </div>
 
       <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
@@ -38,16 +39,23 @@ export default function AdminSidebar() {
           <NavLink
             key={to}
             to={to}
+            onClick={onNavigate}
             className={({ isActive }) => cn(
-              'flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm transition-colors relative',
-              isActive ? 'bg-gold-500/12 text-gold-300' : 'text-ink-400 hover:text-ink-100 hover:bg-white/5',
+              'relative flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm transition-colors duration-300',
+              isActive ? 'text-gold-300' : 'text-ink-400 hover:text-ink-100 hover:bg-white/[0.04]',
             )}
           >
             {({ isActive }) => (
               <>
-                {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-gold-400" />}
-                <Icon size={17} />
-                {label}
+                {isActive && (
+                  <motion.span
+                    layoutId="admin-nav-active"
+                    className="absolute inset-0 rounded-md bg-gold-500/10 border border-gold-500/25 shadow-gold"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <Icon size={17} className="relative z-10" />
+                <span className="relative z-10">{label}</span>
               </>
             )}
           </NavLink>
@@ -64,10 +72,42 @@ export default function AdminSidebar() {
             <p className="text-xs text-ink-500">Owner / Coach</p>
           </div>
         </div>
-        <button onClick={handleSignOut} className="flex items-center gap-2 text-xs text-ink-500 hover:text-danger mt-2 px-2">
+        <button onClick={handleSignOut} className="flex items-center gap-2 text-xs text-ink-500 hover:text-danger transition-colors mt-2 px-2">
           <LogOut size={13} /> Sign out
         </button>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export default function AdminSidebar({ mobileOpen, onCloseMobile }: { mobileOpen?: boolean; onCloseMobile?: () => void }) {
+  return (
+    <>
+      <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 z-10 border-r hairline-gold bg-navy-950/70 backdrop-blur-md">
+        <SidebarContent />
+      </aside>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div className="lg:hidden fixed inset-0 z-[80]" initial="hidden" animate="visible" exit="hidden">
+            <motion.div
+              className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm"
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              onClick={onCloseMobile}
+            />
+            <motion.aside
+              className="absolute left-0 top-0 h-full w-72 flex flex-col bg-navy-950 border-r hairline-gold shadow-elevate"
+              variants={{ hidden: { x: '-100%' }, visible: { x: 0 } }}
+              transition={{ duration: 0.34, ease: [0.22, 0.9, 0.3, 1] }}
+            >
+              <button onClick={onCloseMobile} aria-label="Close menu" className="absolute top-5 right-4 text-ink-400 hover:text-ink-100 z-10">
+                <X size={20} />
+              </button>
+              <SidebarContent onNavigate={onCloseMobile} />
+            </motion.aside>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

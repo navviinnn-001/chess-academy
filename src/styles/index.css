@@ -4,9 +4,9 @@
 
 :root {
   --ease-signature: cubic-bezier(.22,.9,.3,1);
-  --dur-micro: 140ms;
-  --dur-standard: 260ms;
-  --dur-page: 420ms;
+  --dur-micro: 180ms;
+  --dur-standard: 320ms;
+  --dur-page: 450ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -28,13 +28,13 @@ body {
 }
 
 ::selection {
-  background: rgba(63, 203, 166, 0.35);
+  background: rgba(203, 169, 104, 0.28);
   color: #fff;
 }
 
 /* Focus visibility */
 :focus-visible {
-  outline: 2px solid #E8C77E;
+  outline: 2px solid #CBA968;
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -42,29 +42,32 @@ body {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1C2C52; border-radius: 8px; border: 2px solid #0A0F1E; }
-::-webkit-scrollbar-thumb:hover { background: #293F70; }
+::-webkit-scrollbar-thumb { background: #1B1B1F; border-radius: 8px; border: 2px solid #0A0A0B; }
+::-webkit-scrollbar-thumb:hover { background: #25262B; }
 
+/* Faint chessboard grid texture, used as an ambient backdrop across shells */
 .board-bg {
-  background-image: var(--tw-gradient-stops), linear-gradient(rgba(198,169,110,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(198,169,110,0.055) 1px, transparent 1px);
-  background-size: auto, 42px 42px, 42px 42px;
+  background-image: var(--tw-gradient-stops), linear-gradient(rgba(203,169,104,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(203,169,104,0.045) 1px, transparent 1px);
+  background-size: auto, 46px 46px, 46px 46px;
 }
 
+/* Smoky-black panel with restrained transparency — used sparingly, not everywhere */
 .glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
 .shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 37%, rgba(255,255,255,0.04) 63%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 37%, rgba(255,255,255,0.03) 63%);
   background-size: 800px 100%;
   animation: shimmer 1.6s linear infinite;
 }
 
+/* Antique-gold gradient text, reserved for hero headings and premium highlights */
 .gold-text {
-  background: linear-gradient(90deg, #E8C77E, #D4AF6A 55%, #B8924A);
+  background: linear-gradient(90deg, #E4CE9A, #CBA968 55%, #8C6E3A);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -73,4 +76,25 @@ body {
 .coord-label {
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.08em;
+}
+
+/* Editorial letter-spacing for major serif headings */
+.editorial-heading {
+  font-family: 'Fraunces', ui-serif, Georgia, serif;
+  letter-spacing: -0.01em;
+  font-feature-settings: 'ss01' on;
+}
+
+/* Subtle film-grain noise overlay, used at very low opacity inside AmbientBackground */
+.noise-layer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Metallic hairline border, used on sidebars and premium panels */
+.hairline-gold {
+  border-color: rgba(203, 169, 104, 0.18);
+}
+.hairline-emerald {
+  border-color: rgba(79, 191, 160, 0.18);
 }

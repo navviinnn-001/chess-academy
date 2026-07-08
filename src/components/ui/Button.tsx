@@ -35,7 +35,7 @@ export default function Button({
     <motion.button
       whileTap={{ scale: 0.97 }}
       whileHover={{ y: -1 }}
-      transition={{ duration: 0.14, ease: [0.22, 0.9, 0.3, 1] }}
+      transition={{ duration: 0.18, ease: [0.22, 0.9, 0.3, 1] }}
       className={cn(
         'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap',
         variants[variant], sizes[size], full && 'w-full', className,

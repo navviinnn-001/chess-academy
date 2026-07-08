@@ -9,7 +9,7 @@ interface Props {
   sublabel?: string;
 }
 
-export default function ProgressRing({ value, size = 96, stroke = 8, color = '#3FCBA6', label, sublabel }: Props) {
+export default function ProgressRing({ value, size = 96, stroke = 8, color = '#4FBFA0', label, sublabel }: Props) {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (value / 100) * circumference;

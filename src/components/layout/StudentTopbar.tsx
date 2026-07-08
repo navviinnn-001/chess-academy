@@ -8,7 +8,7 @@ export default function StudentTopbar({ title }: { title: string }) {
   return (
     <div className="sticky top-0 z-30 flex items-center justify-between h-[72px] px-5 md:px-8 border-b border-white/8 bg-navy-900/85 backdrop-blur-md">
       <div>
-        <h1 className="font-display text-xl text-ink-100">{title}</h1>
+        <h1 className="editorial-heading text-xl text-ink-100">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
         <button className="relative h-9 w-9 rounded-md flex items-center justify-center text-ink-300 hover:bg-white/5" aria-label="Notifications">

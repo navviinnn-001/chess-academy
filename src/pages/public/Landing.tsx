@@ -160,8 +160,8 @@ export default function Landing() {
               </div>
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <ProgressRing value={92} size={78} label="Attend." />
-                <ProgressRing value={68} size={78} color="#D4AF6A" label="Learning" />
-                <ProgressRing value={74} size={78} color="#3FCBA6" label="Puzzles" />
+                <ProgressRing value={68} size={78} color="#CBA968" label="Learning" />
+                <ProgressRing value={74} size={78} color="#4FBFA0" label="Puzzles" />
               </div>
               <div className="rounded-md bg-navy-700/60 border border-white/8 p-4 flex items-center justify-between">
                 <div>

@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = '919847000000';
+const WHATSAPP_NUMBER = '919605434119';
 const WHATSAPP_MESSAGE = `Hello WE CARE CHESS ACADEMY, I would like to register for Beginner Chess Classes.
 Student Name:
 Age:

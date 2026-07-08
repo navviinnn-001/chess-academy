@@ -12,9 +12,9 @@ export default function Card({ children, className, hover = false, glass = false
   return (
     <motion.div
       className={cn(
-        'rounded-lg border border-white/8 bg-navy-800/70 shadow-card',
+        'rounded-lg border border-white/8 bg-navy-800/80 shadow-card',
         glass && 'glass',
-        hover && 'transition-transform duration-300 will-change-transform hover:-translate-y-1 hover:border-white/14',
+        hover && 'transition-all duration-[320ms] ease-[cubic-bezier(.22,.9,.3,1)] will-change-transform hover:-translate-y-1 hover:border-gold-500/20 hover:shadow-elevate',
         className,
       )}
       {...(props as any)}
@@ -28,7 +28,7 @@ export function CardHeader({ title, subtitle, action }: { title: ReactNode; subt
   return (
     <div className="flex items-start justify-between gap-4 p-5 pb-3">
       <div>
-        <h3 className="font-display text-lg text-ink-100 tracking-tight">{title}</h3>
+        <h3 className="editorial-heading text-lg text-ink-100 tracking-tight">{title}</h3>
         {subtitle && <p className="text-sm text-ink-400 mt-0.5">{subtitle}</p>}
       </div>
       {action}

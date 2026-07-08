@@ -34,11 +34,11 @@ export default function MyProgress() {
           <p className="text-xs text-ink-500 mt-4">Based on completed classes so far</p>
         </Card>
         <Card className="p-6 flex flex-col items-center text-center">
-          <ProgressRing value={data.stats.learningPct} size={100} color="#D4AF6A" label="Learning" />
+          <ProgressRing value={data.stats.learningPct} size={100} color="#CBA968" label="Learning" />
           <p className="text-xs text-ink-500 mt-4">Of all published learning resources</p>
         </Card>
         <Card className="p-6 flex flex-col items-center text-center">
-          <ProgressRing value={data.stats.puzzlePct} size={100} color="#3FCBA6" label="Puzzles" />
+          <ProgressRing value={data.stats.puzzlePct} size={100} color="#4FBFA0" label="Puzzles" />
           <p className="text-xs text-ink-500 mt-4">Of all published puzzles</p>
         </Card>
       </div>
@@ -51,14 +51,14 @@ export default function MyProgress() {
               <AreaChart data={trend} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="attendGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3FCBA6" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="#3FCBA6" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#4FBFA0" stopOpacity={0.4} />
+                    <stop offset="100%" stopColor="#4FBFA0" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="week" stroke="#71799A" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis hide domain={[0, 100]} />
-                <Tooltip contentStyle={{ background: '#0F1730', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12 }} />
-                <Area type="monotone" dataKey="pct" stroke="#3FCBA6" strokeWidth={2} fill="url(#attendGrad)" />
+                <Tooltip contentStyle={{ background: '#131316', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12 }} />
+                <Area type="monotone" dataKey="pct" stroke="#4FBFA0" strokeWidth={2} fill="url(#attendGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

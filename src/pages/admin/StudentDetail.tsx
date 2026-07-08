@@ -54,8 +54,8 @@ export default function StudentDetail() {
         </Card>
         <div className="lg:col-span-3 grid grid-cols-3 gap-4">
           <Card className="p-5 flex flex-col items-center"><ProgressRing value={student.attendancePct} size={70} label="Attend." /></Card>
-          <Card className="p-5 flex flex-col items-center"><ProgressRing value={student.learningPct} size={70} color="#D4AF6A" label="Learning" /></Card>
-          <Card className="p-5 flex flex-col items-center"><ProgressRing value={student.puzzlePct} size={70} color="#3FCBA6" label="Puzzles" /></Card>
+          <Card className="p-5 flex flex-col items-center"><ProgressRing value={student.learningPct} size={70} color="#CBA968" label="Learning" /></Card>
+          <Card className="p-5 flex flex-col items-center"><ProgressRing value={student.puzzlePct} size={70} color="#4FBFA0" label="Puzzles" /></Card>
         </div>
       </div>
 
